@@ -28,21 +28,6 @@ public class WinningLotto {
 	public MatchCount aggreateMatchCount(Lotto tickets) {
 		int count = checkNumbers(tickets);
 		boolean isContainBonus = isContainBonus(tickets);
-		if (count == MatchCount.SIX.getCount()) {
-			return MatchCount.SIX;
-		}
-		if (count == MatchCount.FIVE_BONUS.getCount() && isContainBonus == MatchCount.FIVE_BONUS.hasBonus()) {
-			return MatchCount.FIVE_BONUS;
-		}
-		if (count == MatchCount.FIVE.getCount()) {
-			return MatchCount.FIVE;
-		}
-		if (count == MatchCount.FOUR.getCount()) {
-			return MatchCount.FOUR;
-		}
-		if (count == MatchCount.THREE.getCount()) {
-			return MatchCount.THREE;
-		}
-		return MatchCount.NOTHING;
+		return MatchCount.aggreateMatchCount(count, isContainBonus);
 	}
 }
