@@ -1,3 +1,4 @@
+# [step 1]
 ## 1차 피드백
 1. Application 클래스의 많은 책임이 존재한다
     - mvc 패턴 사용
@@ -28,3 +29,15 @@
 12. MathCount의 from 메소드에서 null 처리 수정
     - NullPointException 핸들링
     - enum에 꽝을 의미하는 상수 추가
+
+## 2차 피드백
+1. 생성자의 접근 제어자에 대한 고민을 해보자
+    - 외부 패키지 접근을 막고자 하는 것인지, 어떤 의도로 생성자를 보호하고 싶은 것인지 다시 고민
+    - 이후 적절한 접근 제어자 부여
+2. 적중한 숫자 갯수와 보너스볼 여부를 MatchCount와 매핑하는 메소드의 위치 수정
+    - WinningLotto에서는 해당 메소드를 호출하는 역할만 부여
+    - 실제 로직은 MatchCount로 이동
+3. printStatistics 메소드에 하드코딩된 부분을 수정
+    - MatchCount enum에 명시된 필드들로 대체
+4. budget를 Money 객체로 표현
+    - 단순 int가 아닌 Money 객체로서 생성 시 예외 입력 검증
