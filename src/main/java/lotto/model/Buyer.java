@@ -8,7 +8,7 @@ public class Buyer {
 	private final List<Lotto> tickets;
 	private final static int LOTTO_PRICE = 1_000;
 
-	Buyer(List<Lotto> tickets) {
+	private Buyer(List<Lotto> tickets) {
 		this.tickets = List.copyOf(tickets);
 	}
 
