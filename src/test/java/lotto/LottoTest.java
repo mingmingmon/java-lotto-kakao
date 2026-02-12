@@ -1,6 +1,6 @@
 package lotto;
 
-import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ import lotto.model.LottoNumber;
 public class LottoTest {
 
 	@Test
-	void createLottoTest() {
+	void createRandomLottoTest() {
 		Lotto lotto = Lotto.createRandomLotto();
 		List<LottoNumber> lottoNumbers = lotto.getNumbers();
 		assertThat(lottoNumbers.size()).isEqualTo(6);
@@ -28,6 +28,16 @@ public class LottoTest {
 			assertThat(lottoNumbers.get(i).getNumber())
 				.isLessThan(lottoNumbers.get(i + 1).getNumber());
 		}
+	}
+
+	@Test
+	void createManualLottoTest() {
+		String input = "1,2,3,4,5,6";
+		Lotto lotto = Lotto.createManualLotto(input);
+		List<Integer> numbers = lotto.getNumbers().stream()
+			.map(LottoNumber::getNumber)
+			.toList();
+		assertThat(numbers).containsExactly(1, 2, 3, 4, 5, 6);
 	}
 
 }

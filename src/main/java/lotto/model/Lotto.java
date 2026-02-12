@@ -1,5 +1,6 @@
 package lotto.model;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,6 +45,16 @@ public class Lotto {
 			.collect(Collectors.toList());
 
 		return new Lotto(picked);
+	}
+
+	public static Lotto createManualLotto(String input) {
+		List<LottoNumber> numbers = Arrays.stream(input.split(","))
+			.map(String::trim)
+			.map(Integer::parseInt)
+			.map(LottoNumber::new)
+			.toList();
+
+		return new Lotto(numbers);
 	}
 
 	public List<LottoNumber> getNumbers() {
