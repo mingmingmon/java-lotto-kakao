@@ -9,7 +9,7 @@ import lotto.model.MatchCount;
 public class MatchCountTest {
 
 	@Test
-	public void printStatisticsMessage() {
+	void printStatisticsMessage() {
 		MatchCount matchCount = MatchCount.THREE;
 		int hits = 1;
 		assertThat(matchCount.getStatisticsMessage(hits)).isEqualTo("3개 일치 (5000원)- 1개");

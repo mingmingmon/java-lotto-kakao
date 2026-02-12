@@ -12,9 +12,9 @@ public class Buyer {
 		this.tickets = List.copyOf(tickets);
 	}
 
-	public static Buyer buyLotteries(int budget) {
+	public static Buyer buyLotteries(Money money) {
 		List<Lotto> tickets = new ArrayList<>();
-		int amount = budget / LOTTO_PRICE;
+		int amount = money.getAmount() / LOTTO_PRICE;
 		if (amount == 0) {
 			throw new IllegalArgumentException("한 개의 로또도 살 수 없는 돈입니다.");
 		}
