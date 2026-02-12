@@ -50,5 +50,18 @@ public enum MatchCount {
 		return MatchCount.NOTHING;
 	}
 
+	public String getStatisticsMessage(int amount) {
+		if (bonus) {
+			return String.format(
+				"%d개 일치, 보너스 볼 일치(%d원)- %d개",
+				count, price, amount
+			);
+		}
+		return String.format(
+			"%d개 일치 (%d원)- %d개",
+			count, price, amount
+		);
+	}
+
 }
 

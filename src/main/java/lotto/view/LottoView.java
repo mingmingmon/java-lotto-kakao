@@ -32,12 +32,10 @@ public class LottoView {
 	}
 
 	public void printStatistics(Map<MatchCount, Integer> counts, double returnRate) {
-		System.out.println("당첨 통계");
-		System.out.println("3개 일치 (5000원)- " + counts.getOrDefault(MatchCount.THREE, 0) + "개");
-		System.out.println("4개 일치 (50000원)- " + counts.getOrDefault(MatchCount.FOUR, 0) + "개");
-		System.out.println("5개 일치 (1500000원)- " + counts.getOrDefault(MatchCount.FIVE, 0) + "개");
-		System.out.println("5개 일치, 보너스 볼 일치(30000000원)- " + counts.getOrDefault(MatchCount.FIVE_BONUS, 0) + "개");
-		System.out.println("6개 일치 (2000000000원)- " + counts.getOrDefault(MatchCount.SIX, 0) + "개");
+		for (MatchCount matchCount : MatchCount.values()) {
+			int count = counts.getOrDefault(matchCount, 0);
+			System.out.println(matchCount.getStatisticsMessage(count));
+		}
 		System.out.println("총 수익률은 " + returnRate + "입니다.");
 	}
 }
