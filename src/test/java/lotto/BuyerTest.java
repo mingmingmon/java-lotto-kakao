@@ -1,6 +1,6 @@
 package lotto;
 
-import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.*;
 
 import java.util.List;
 
@@ -8,24 +8,18 @@ import org.junit.jupiter.api.Test;
 
 import lotto.model.Buyer;
 import lotto.model.Lotto;
-import lotto.model.Money;
 
 public class BuyerTest {
 
 	@Test
-	void buyWithLackAmountTest() {
-		int budget = 500;
-		Money money = new Money(budget);
-		assertThatThrownBy(() -> Buyer.buyLotteries(money))
-			.isInstanceOf(IllegalArgumentException.class);
+	void shouldCreateBuyerWithGivenTickets() {
+		Lotto lotto1 = Lotto.createManualLotto("1,2,3,4,5,6");
+		Lotto lotto2 = Lotto.createManualLotto("7,8,9,10,11,12");
+		List<Lotto> tickets = List.of(lotto1, lotto2);
+		Buyer buyer = new Buyer(tickets);
+
+		assertThat(buyer.getTickets()).hasSize(2);
+		assertThat(buyer.getTickets()).containsExactly(lotto1, lotto2);
 	}
 
-	@Test
-	void buyWithExactAmountTest() {
-		int budget = 14_000;
-		Money money = new Money(budget);
-		Buyer buyer = Buyer.buyLotteries(money);
-		List<Lotto> tickets = buyer.getTickets();
-		assertThat(tickets.size()).isEqualTo(14);
-	}
 }

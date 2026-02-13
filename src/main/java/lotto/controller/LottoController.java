@@ -4,6 +4,7 @@ import lotto.*;
 import lotto.model.Buyer;
 import lotto.model.LotteryChecker;
 import lotto.model.Lotto;
+import lotto.model.LottoIssuer;
 import lotto.model.LottoNumber;
 import lotto.model.MatchCount;
 import lotto.model.Money;
@@ -25,16 +26,28 @@ public class LottoController {
 		int budget = view.readBudget();
 		Money money = new Money(budget);
 
-		Buyer buyer = Buyer.buyLotteries(money);
-		List<Lotto> tickets = buyer.getTickets();
+		int manualCount = view.readManualCount();
+		List<String> manualInputs = view.readManualInputs(manualCount);
+
+		List<Lotto> tickets = issueLotteries(money, manualCount, manualInputs);
 		view.printTickets(tickets);
 
 		WinningLotto winningLotto = createWinningLotto();
-
 		LotteryChecker checker = calculateResults(tickets, winningLotto);
 
 		view.printStatistics(checker.getCounts(),
 			checker.calculateReturnRate(budget));
+	}
+
+	private List<Lotto> issueLotteries(Money money, int manualCount, List<String> manualInputs) {
+
+		LottoIssuer lottoIssuer = new LottoIssuer(money, manualCount);
+
+		List<Lotto> tickets = new ArrayList<>();
+		tickets.addAll(lottoIssuer.issueManualLotteries(manualInputs));
+		tickets.addAll(lottoIssuer.issueRandomLotteries());
+
+		return tickets;
 	}
 
 	private WinningLotto createWinningLotto() {
