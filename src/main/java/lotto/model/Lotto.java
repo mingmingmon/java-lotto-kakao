@@ -15,6 +15,18 @@ public class Lotto {
 		this.numbers = List.copyOf(numbers);
 	}
 
+	public Lotto(String text) {
+		this(parseText(text));
+	}
+
+	private static List<LottoNumber> parseText(String text) {
+		return Arrays.stream(text.split(","))
+			.map(String::trim)
+			.map(Integer::parseInt)
+			.map(LottoNumber::new)
+			.toList();
+	}
+
 	private void validate(List<LottoNumber> numbers) {
 		if (numbers.size() != LOTTO_SIZE) {
 			throw new IllegalArgumentException("로또 번호는 6개여야 합니다.");
@@ -35,7 +47,7 @@ public class Lotto {
 		return this.numbers.contains(bonus);
 	}
 
-	public static Lotto createRandomLotto() {
+	public static Lotto random() {
 		List<LottoNumber> pool = LottoNumber.getCache();
 		Collections.shuffle(pool);
 
@@ -47,18 +59,7 @@ public class Lotto {
 		return new Lotto(picked);
 	}
 
-	public static Lotto createManualLotto(String input) {
-		List<LottoNumber> numbers = Arrays.stream(input.split(","))
-			.map(String::trim)
-			.map(Integer::parseInt)
-			.map(LottoNumber::new)
-			.toList();
-
-		return new Lotto(numbers);
-	}
-
 	public List<LottoNumber> getNumbers() {
 		return this.numbers;
 	}
-
 }

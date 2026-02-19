@@ -13,14 +13,15 @@ public class LottoTest {
 
 	@Test
 	void createRandomLottoTest() {
-		Lotto lotto = Lotto.createRandomLotto();
+		Lotto lotto = Lotto.random();
 		List<LottoNumber> lottoNumbers = lotto.getNumbers();
-		assertThat(lottoNumbers.size()).isEqualTo(6);
+
+		assertThat(lottoNumbers).hasSize(6);
 	}
 
 	@Test
 	void isAscending() {
-		Lotto lotto = Lotto.createRandomLotto();
+		Lotto lotto = Lotto.random();
 		List<LottoNumber> lottoNumbers = lotto.getNumbers();
 
 		int size = lottoNumbers.size();
@@ -32,12 +33,12 @@ public class LottoTest {
 
 	@Test
 	void createManualLottoTest() {
-		String input = "1,2,3,4,5,6";
-		Lotto lotto = Lotto.createManualLotto(input);
+		Lotto lotto = new Lotto("1,2,3,4,5,6");
+
 		List<Integer> numbers = lotto.getNumbers().stream()
 			.map(LottoNumber::getNumber)
 			.toList();
+
 		assertThat(numbers).containsExactly(1, 2, 3, 4, 5, 6);
 	}
-
 }

@@ -9,7 +9,7 @@ public class DefaultLottosGenerator implements LottosGenerator {
 	public Lottos generateManual(List<String> inputs) {
 		List<Lotto> tickets = new ArrayList<>();
 		for (String input : inputs) {
-			tickets.add(Lotto.createManualLotto(input));
+			tickets.add(new Lotto(input));
 		}
 		return Lottos.of(tickets);
 	}
@@ -18,7 +18,7 @@ public class DefaultLottosGenerator implements LottosGenerator {
 	public Lottos generateAuto(int count) {
 		List<Lotto> tickets = new ArrayList<>();
 		for (int i = 0; i < count; i++) {
-			tickets.add(Lotto.createRandomLotto());
+			tickets.add(Lotto.random());
 		}
 		return Lottos.of(tickets);
 	}
