@@ -4,19 +4,19 @@ import java.util.List;
 
 public class LottoIssuer {
 
-	private static final int LOTTO_PRICE = 1000;
-
 	private final Money money;
 	private final int manualCount;
 	private final int totalCount;
 	private final LottosGenerator generator;
+	private final LottoPrice lottoPrice;
 
-	public LottoIssuer(Money money, int manualCount, LottosGenerator generator) {
+	public LottoIssuer(Money money, int manualCount, LottosGenerator generator, LottoPrice lottoPrice) {
 		this.money = money;
 		validateManualCount(manualCount);
 		this.manualCount = manualCount;
-		this.totalCount = calculatePossibleCount(manualCount);
 		this.generator = generator;
+		this.lottoPrice = lottoPrice;
+		this.totalCount = calculatePossibleCount();
 	}
 
 	private void validateManualCount(int manualCount) {
@@ -25,11 +25,8 @@ public class LottoIssuer {
 		}
 	}
 
-	private int calculatePossibleCount(int manualCount) {
-		int totalCount = money.getAmount() / LOTTO_PRICE;
-		if (totalCount == 0) {
-			throw new IllegalArgumentException("한 개의 로또도 살 수 없는 돈입니다.");
-		}
+	private int calculatePossibleCount() {
+		int totalCount = money.purchasableCountOrThrow(lottoPrice);
 		if (manualCount > totalCount) {
 			throw new IllegalArgumentException("수동 로또 개수가 전체 구매 가능 수량을 초과했습니다.");
 		}

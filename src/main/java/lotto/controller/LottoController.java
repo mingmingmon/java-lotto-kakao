@@ -5,6 +5,7 @@ import lotto.model.LotteryChecker;
 import lotto.model.Lotto;
 import lotto.model.LottoIssuer;
 import lotto.model.LottoNumber;
+import lotto.model.LottoPrice;
 import lotto.model.Lottos;
 import lotto.model.LottosGenerator;
 import lotto.model.MatchCount;
@@ -19,10 +20,12 @@ public class LottoController {
 
 	private final LottoView view;
 	private final LottosGenerator lottosGenerator;
+	private final LottoPrice lottoPrice;
 
-	public LottoController(LottoView view, LottosGenerator lottosGenerator) {
+	public LottoController(LottoView view, LottosGenerator lottosGenerator, LottoPrice lottoPrice) {
 		this.view = view;
 		this.lottosGenerator = lottosGenerator;
+		this.lottoPrice = lottoPrice;
 	}
 
 	public void run() {
@@ -43,7 +46,7 @@ public class LottoController {
 	}
 
 	private Lottos issueLotteries(Money money, int manualCount, List<String> manualInputs) {
-		LottoIssuer lottoIssuer = new LottoIssuer(money, manualCount, lottosGenerator);
+		LottoIssuer lottoIssuer = new LottoIssuer(money, manualCount, lottosGenerator, lottoPrice);
 		return lottoIssuer.issueAll(manualInputs);
 	}
 
