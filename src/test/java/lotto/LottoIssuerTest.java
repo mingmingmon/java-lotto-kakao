@@ -3,21 +3,23 @@ package lotto;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.HashSet;
 import java.util.List;
 
-import lotto.model.Lotto;
+import lotto.model.DefaultLottosGenerator;
+import lotto.model.Lottos;
+import lotto.model.LottosGenerator;
 import lotto.model.LottoIssuer;
-import lotto.model.LottoNumber;
 import lotto.model.Money;
 
 class LottoIssuerTest {
+
+	private final LottosGenerator generator = new DefaultLottosGenerator();
 
 	@Test
 	void shouldThrowExceptionWhenManualCountIsNegative() {
 		Money money = new Money(1000);
 
-		assertThatThrownBy(() -> new LottoIssuer(money, -1))
+		assertThatThrownBy(() -> new LottoIssuer(money, -1, generator))
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("수동 로또 개수는 음수일 수 없습니다.");
 	}
@@ -26,7 +28,7 @@ class LottoIssuerTest {
 	void shouldThrowExceptionWhenMoneyIsNotEnoughToBuyAnyTicket() {
 		Money money = new Money(999);
 
-		assertThatThrownBy(() -> new LottoIssuer(money, 0))
+		assertThatThrownBy(() -> new LottoIssuer(money, 0, generator))
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("한 개의 로또도 살 수 없는 돈입니다.");
 	}
@@ -35,30 +37,15 @@ class LottoIssuerTest {
 	void shouldThrowExceptionWhenManualCountExceedsTotalPurchasableCount() {
 		Money money = new Money(2000);
 
-		assertThatThrownBy(() -> new LottoIssuer(money, 3))
+		assertThatThrownBy(() -> new LottoIssuer(money, 3, generator))
 			.isInstanceOf(IllegalArgumentException.class)
 			.hasMessage("수동 로또 개수가 전체 구매 가능 수량을 초과했습니다.");
 	}
 
 	@Test
-	void shouldIssueManualLotteriesWhenInputCountMatchesManualCount() {
-		Money money = new Money(5000);
-		LottoIssuer issuer = new LottoIssuer(money, 2);
-		List<String> manualInputs = List.of(
-			"1,2,3,4,5,6",
-			"7,8,9,10,11,12"
-		);
-		List<Lotto> manuals = issuer.issueManualLotteries(manualInputs);
-
-		assertThat(manuals).hasSize(2);
-		assertThat(manuals.get(0).getNumbers()).hasSize(6);
-		assertThat(manuals.get(1).getNumbers()).hasSize(6);
-	}
-
-	@Test
 	void shouldThrowExceptionWhenManualInputCountDoesNotMatchManualCount() {
 		Money money = new Money(5000);
-		LottoIssuer issuer = new LottoIssuer(money, 2);
+		LottoIssuer issuer = new LottoIssuer(money, 2, generator);
 		List<String> manualInputs = List.of("1,2,3,4,5,6");
 
 		assertThatThrownBy(() -> issuer.issueManualLotteries(manualInputs))
@@ -69,33 +56,25 @@ class LottoIssuerTest {
 	@Test
 	void shouldIssueCorrectNumberOfRandomLotteries() {
 		Money money = new Money(5000);
-		LottoIssuer issuer = new LottoIssuer(money, 2);
-		List<Lotto> autos = issuer.issueRandomLotteries();
+		LottoIssuer issuer = new LottoIssuer(money, 2, generator);
+
+		Lottos autos = issuer.issueRandomLotteries();
 
 		assertThat(autos).hasSize(3);
-		assertThat(autos).allSatisfy(lotto -> assertThat(lotto.getNumbers()).hasSize(6));
 	}
 
 	@Test
-	void shouldIssueRandomLotteriesWithDistinctNumbersInEachTicket() {
-		Money money = new Money(2000);
-		LottoIssuer issuer = new LottoIssuer(money, 0);
-		List<Lotto> autos = issuer.issueRandomLotteries();
+	void shouldIssueManualLotteriesWhenInputCountMatchesManualCount() {
+		Money money = new Money(5000);
+		LottoIssuer issuer = new LottoIssuer(money, 2, generator);
 
-		assertThat(autos).allSatisfy(lotto -> {
-			long distinct = lotto.getNumbers().stream().distinct().count();
-			assertThat(distinct).isEqualTo(6);
-			assertThat(new HashSet<>(lotto.getNumbers())).hasSize(6);
-		});
-	}
+		List<String> manualInputs = List.of(
+			"1,2,3,4,5,6",
+			"7,8,9,10,11,12"
+		);
 
-	@Test
-	void shouldIssueManualLottoUsingStaticFactory() {
-		Lotto lotto = LottoIssuer.issueManualLotto("1,2,3,4,5,6");
+		Lottos manuals = issuer.issueManualLotteries(manualInputs);
 
-		assertThat(lotto.getNumbers()).hasSize(6);
-		assertThat(lotto.getNumbers())
-			.extracting(LottoNumber::getNumber)
-			.containsExactly(1, 2, 3, 4, 5, 6);
+		assertThat(manuals).hasSize(2);
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import lotto.model.Lotto;
+import lotto.model.Lottos;
 import lotto.model.MatchCount;
 
 public class LottoView {
@@ -41,7 +42,7 @@ public class LottoView {
 		return Integer.parseInt(scanner.nextLine());
 	}
 
-	public void printTickets(List<Lotto> tickets) {
+	public void printTickets(Lottos tickets) {
 		System.out.println(tickets.size() + "개를 구매했습니다.");
 		tickets.forEach(ticket -> System.out.println(ticket.getNumbers()));
 	}

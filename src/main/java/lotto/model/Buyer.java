@@ -1,16 +1,14 @@
 package lotto.model;
 
-import java.util.List;
-
 public class Buyer {
 
-	private final List<Lotto> tickets;
+	private final Lottos tickets;
 
-	public Buyer(List<Lotto> tickets) {
-		this.tickets = List.copyOf(tickets);
+	public Buyer(Lottos tickets) {
+		this.tickets = tickets;
 	}
 
-	public List<Lotto> getTickets() {
-		return this.tickets;
+	public Lottos tickets() {
+		return tickets;
 	}
 }
