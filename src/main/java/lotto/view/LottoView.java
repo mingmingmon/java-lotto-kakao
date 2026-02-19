@@ -48,9 +48,14 @@ public class LottoView {
 	}
 
 	public void printStatistics(Map<MatchCount, Integer> counts, double returnRate) {
-		for (MatchCount matchCount : MatchCount.values()) {
-			int count = counts.getOrDefault(matchCount, 0);
-			System.out.println(matchCount.getStatisticsMessage(count));
+		StatisticsFormatter formatter = new StatisticsFormatter();
+
+		for (MatchCount match : MatchCount.values()) {
+			int amount = counts.getOrDefault(match, 0);
+			String line = formatter.format(match, amount);
+			if (!line.isBlank()) {
+				System.out.println(line);
+			}
 		}
 		System.out.println("총 수익률은 " + returnRate + "입니다.");
 	}

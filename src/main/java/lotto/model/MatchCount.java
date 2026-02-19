@@ -3,11 +3,11 @@ package lotto.model;
 public enum MatchCount {
 
 	NOTHING(0, false, 0),
-	THREE(3, false, 5000),
-	FOUR(4, false, 50000),
-	FIVE(5, false, 1500000),
-	FIVE_BONUS(5, true, 30000000),
-	SIX(6, false, 2000000000);
+	THREE(3, false, 5_000),
+	FOUR(4, false, 50_000),
+	FIVE(5, false, 1_500_000),
+	FIVE_BONUS(5, true, 30_000_000),
+	SIX(6, false, 2_000_000_000);
 
 	private final int count;
 	private final boolean bonus;
@@ -38,19 +38,6 @@ public enum MatchCount {
 			}
 		}
 		return MatchCount.NOTHING;
-	}
-
-		public String getStatisticsMessage(int amount) {
-		if (bonus) {
-			return String.format(
-				"%d개 일치, 보너스 볼 일치(%d원)- %d개",
-				count, price, amount
-			);
-		}
-		return String.format(
-			"%d개 일치 (%d원)- %d개",
-			count, price, amount
-		);
 	}
 
 }
